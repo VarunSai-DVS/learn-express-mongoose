@@ -7,7 +7,14 @@ function getAuthor(family_name, first_name) {
 }
 
 function getGenre(name) {
+
+  name = sanitizeName(name);
   return Genre.find({name: name});
+}
+
+function sanitizeName(input) {
+  return input.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 exports.new_book = async (res, family_name, first_name, genre_name, title) => {
