@@ -8,12 +8,13 @@ function getAuthor(family_name, first_name) {
 
 function getGenre(name) {
 
-  const onlyAlphaNumericPattern = /^[A-Za-z0-9]+$/;
-
-  if(!name.match(onlyAlphaNumericPattern)){
-    throw new Error('Name is not a valid string!');
-  }
+  name = sanitizeName(name);
   return Genre.find({name: name});
+}
+
+function sanitizeName(input) {
+  return input.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 exports.new_book = async (res, family_name, first_name, genre_name, title) => {
